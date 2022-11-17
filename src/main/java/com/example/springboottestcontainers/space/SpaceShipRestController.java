@@ -17,18 +17,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @Profile("redis")
 public class SpaceShipRestController {
+    public static String CACHE_NAME = "shipcache";
     private final CacheManager cacheManager;
 
     //    private final RedisTemplate<String, Object> redisTemplate;
     @GetMapping("/all")
     public List<SpaceShip> allShips() {
-        Cache cache = cacheManager.getCache("ships");
+        Cache cache = cacheManager.getCache(CACHE_NAME);
         return cache.get("ships", List.class);
     }
 
     @PostMapping("/")
     public List<SpaceShip> newShip(String captainName) {
-        Cache cache = cacheManager.getCache("ships");
+        Cache cache = cacheManager.getCache(CACHE_NAME);
         List<SpaceShip> ships = (List<SpaceShip>) cache.get("ships", List.class);
         if (ships == null)
             ships = new ArrayList<>();
